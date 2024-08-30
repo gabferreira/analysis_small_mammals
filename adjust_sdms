@@ -1,0 +1,26 @@
+## occs
+- Você utilizou ocorrências apenas dentro da Mata Atlântica, mesmo quando as espécies se distribuem fora dessas regiões? Você deve compilar dados de toda a distribuição nativa da espécie e refazer seu SDM. Ao contrário, você estará enquadrando uma parcela do nicho da espécie, o que poderia levar a resultados enganosos (ok)
+
+## vars
+- A seleção dos AOGCMs foi feita por especialistas ou alguma análise? Por que você selecionou esses GCMs? Se você não puder justificar a seleção do GCM, use todos os GCM disponíveis na CHELSA (ok)
+
+## enms
+- Melhorar a descrição do SDM em todas as etapas, conforme recomendado pelos três revisores. Agradeço aos autores por fornecerem o protocolo ODMAP, mas ele não é detalhado o suficiente.
+
+- TSS e AUC são altamente sensíveis à extensão da área de calibração. Relate outras métricas como Sorensen, Fpb e Boyce (leia Leroy et al., 2018). Um limite de desempenho deve ser estabelecido para que um modelo seja aceito na análise.
+Esses valores de desempenho são bastante implausíveis devido à grande área de calibração usada e às partições inadequadas para este estudo. Além disso, melhore a legenda da Tabela S3. p, COR e Deviance. Nenhum desses parâmetros foi explicado na seção de métodos. Outra questão é se as métricas relatadas são a mediana do desempenho de modelos individuais ou se há uma validação real de modelos de ensemble. (ok)
+
+- Faca uma avaliação geral do realismo das curvas de resposta e incluir na parte de avaliação do modelo do MS: as respostas das espécies ao ambiente são geralmente realistas do ponto de vista biológico? (ok)
+
+- Recomendo fortemente a utilização de modelos contínuos acima do limiar (também conhecidos como modelos semi-binários (Domisch et al., 2019) em vez de utilizar modelos binários para calcular a exposição climática das espécies (ou seja, quanto a distribuição das espécies irá mudar no futuro em relação às condições de referência). Ao binarizar um modelo você perde muita informação (Guillera-Arroita et al., 2015). (ok)
+
+- Gostaria que você cuidasse da previsão excessiva do SDM, no entanto, considerando que espécies em áreas altamente diversas, como os Neotrópicos, são geralmente pouco amostradas, a abordagem usada aqui pode restringir excessivamente a distribuição de espécies. Vários outros métodos podem ser usados em vez de um buffer em torno das presenças. Recomendo fortemente que você dê uma olhada nos métodos “a posteriori” explorados em (Mendes et al., 2020) (ok)
+
+- Não é aconselhável usar áreas de estudo como áreas de calibração (ou áreas de treinamento ou áreas acessíveis) (Barve et al., 2011; VanDerWal et al., 2009). A área de calibração afetará o desempenho do modelo (inflacionando várias métricas de desempenho do modelo) e padrões de adequação climatica das espécies (às vezes tornando as previsões do modelo pouco informativas) (Acevedo et al., 2012). Uma abordagem interessante é delimitar áreas de calibração com base em ecorregiões terrestres (Olson et al., 2001) onde ocorrem as espécies (Rojas-Soto et al., 2024). (ok)
+
+- Esta abordagem de partição não é conveniente para a sua pesquisa. Como você pretende projetar seus modelos em outras condições temporais, você precisa de uma partição para avaliar mais diretamente a capacidade de transferibilidade de seus modelos (Santini et al., 2021). (ok)
+
+- Não é aconselhável criar SDMs com hiperparâmetros padrão porque os valores padrão dos hiperparâmetros geralmente não retornam os melhores modelos (Fourcade, 2021; Morales et al., 2017; Vignali et al., 2020). Além disso, muitas informações devem ser escritas sobre como cada um desses modelos foi ajustado. Não é informativo escrever que as configurações padrão foram usadas entre os pacotes SDM. Por exemplo, para Maxent, quantos pontos de fundo foram amostrados O ponto de fundo foi tendencioso ou amostrado aleatoriamente? Quais recursos foram usados (ou seja, cloglog)? ., etc. Outro problema extremamente importante é que você não avaliou/retirou a extrapolação do modelo. Este é um ponto que não pode de forma alguma ser esquecido. et al., 2014; Owens et al., 2013). Preferencialmente, devem ser utilizadas métricas que capturem melhor a forma dos dados no espaço ambiental (SHAPE ou AOA). (ok)
+
+## td/pd
+- Talvez fosse interessante criar os mesmos mapas das Figuras 2 e 3 com os resíduos da relação entre diversidade taxonômica e filogenética (portanto, PD/TD), para ver como o PD muda ao longo do tempo fora da influência do TD? Este seria apenas um número suplementar, mas pode ser uma boa maneira de ilustrar as diferenças (ou semelhanças) entre os padrões de PD e TD.
