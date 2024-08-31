@@ -1,7 +1,7 @@
 #' ----
 #' title: flexsdm
 #' author: mauricio vancine
-#' date: 11/06/2024
+#' date: 30/08/2024
 #' operational system: gnu/linux - ubuntu - pop_os
 #' link: https://sjevelazco.github.io/flexsdm/articles/v02_modeling.html
 #' ----
@@ -200,7 +200,7 @@ for(i in unique(occ$species)){
         bg_part <- flexsdm::sdm_extract(data = bg, x = "x", y = "y", env_layer = occ_i_filt_block_layer)
         readr::write_csv(bg, paste0(sp_dir, "01_occ_bg_", sp_name, ".csv"))   
         
-        map_psa_block <- tm_shape(var_f[[1]]) +
+        map_psa_block <- tm_shape(var_c[[1]]) +
             tm_raster(col.legend = tm_legend(show = FALSE),
                       col.scale = tm_scale_categorical(values = "gray80")) +
             tm_shape(occ_i_filt_block_layer) +
@@ -215,7 +215,7 @@ for(i in unique(occ$species)){
             tm_title(text = i)
         tmap::tmap_save(map_psa_block, paste0(sp_dir, "01_occ_map_", sp_name, "_psa_block.png"))
         
-        map_bg_block <- tm_shape(var_f[[1]]) +
+        map_bg_block <- tm_shape(var_c[[1]]) +
             tm_raster(col.legend = tm_legend(show = FALSE),
                       col.scale = tm_scale_categorical(values = "gray80")) +
             tm_shape(occ_i_filt_block_layer) +
@@ -468,8 +468,8 @@ for(i in unique(occ$species)){
             names(predict_f_m[[1]]) <- paste0(names(predict_f_m)[1], "_msdm")
             names(predict_f_m[[2]]) <- paste0(names(predict_f_m)[1], "_msdm_thr")
             
-            terra::writeRaster(predict_c_m[[1]], paste0(sp_dir, "05_ens_con_c_msdm_", sp_name, "_", j, ".tif"), overwrite = TRUE)
-            terra::writeRaster(predict_c_m[[2]], paste0(sp_dir, "05_ens_con_c_msdm_thr_", sp_name, "_", j, ".tif"), overwrite = TRUE)
+            terra::writeRaster(predict_f_m[[1]], paste0(sp_dir, "05_ens_con_f_msdm_", sp_name, "_", j, ".tif"), overwrite = TRUE)
+            terra::writeRaster(predict_f_m[[2]], paste0(sp_dir, "05_ens_con_f_msdm_thr_", sp_name, "_", j, ".tif"), overwrite = TRUE)
             
         }
         
@@ -496,7 +496,7 @@ for(i in unique(occ$species)){
             rlayer = var_c_ca_sel,
             calibarea = ca)
         
-        map_psa <- tm_shape(var_f[[1]]) +
+        map_psa <- tm_shape(var_c[[1]]) +
             tm_raster(col.legend = tm_legend(show = FALSE),
                       col.scale = tm_scale_categorical(values = "gray80")) +
             tm_shape(af) +
@@ -508,7 +508,7 @@ for(i in unique(occ$species)){
             tm_title(text = i)
         tmap::tmap_save(map_psa, paste0(sp_dir, "01_occ_map_", sp_name, "_psa.png"))
         
-        map_bg <- tm_shape(var_f[[1]]) +
+        map_bg <- tm_shape(var_c[[1]]) +
             tm_raster(col.legend = tm_legend(show = FALSE),
                       col.scale = tm_scale_categorical(values = "gray80")) +
             tm_shape(af) +
@@ -741,8 +741,8 @@ for(i in unique(occ$species)){
                 grep(j, ., value = TRUE) %>% 
                 terra::rast() %>% 
                 terra::mean()
-            names(predict_c_con_mean) <- paste0(sp_name, "_mean_con_f_", j)    
-            terra::writeRaster(predict_c_con_mean, paste0(sp_dir, "05_ens_con_f_", sp_name, "_", j, ".tif"), overwrite = TRUE)
+            names(predict_f_con_mean) <- paste0(sp_name, "_mean_con_f_", j)    
+            terra::writeRaster(predict_f_con_mean, paste0(sp_dir, "05_ens_con_f_", sp_name, "_", j, ".tif"), overwrite = TRUE)
             
             predict_f_con_thr_mean <- dir(sp_dir, pattern = "05_ens_con_thr_f_esm_", full.names = TRUE) %>% 
                 grep(j, ., value = TRUE) %>% 
@@ -773,30 +773,30 @@ for(i in unique(occ$species)){
         terra::writeRaster(predict_c_con_mean_m[[2]], paste0(sp_dir, "05_ens_con_c_msdm_thr_", sp_name, ".tif"), overwrite = TRUE)
         
         #### future ----
-        predict_c_con_mean <- dir(path = sp_dir, pattern = "ssp", full.names = TRUE) %>% 
+        predict_f_con_mean <- dir(path = sp_dir, pattern = "ssp", full.names = TRUE) %>% 
             grep("esm", ., value = TRUE, invert = TRUE) %>% 
             grep("_thr", ., value = TRUE, invert = TRUE) %>% 
             terra::rast()
         
         for(j in fut){
             
-            predict_c_con_mean_j <- terra::subset(pred_f, grep(j, names(pred_f)))
+            predict_f_con_mean_j <- terra::subset(predict_f_con_mean, grep(j, names(predict_f_con_mean)))
             
-            predict_c_con_mean_j_m <- flexsdm::msdm_posteriori(
+            predict_f_con_mean_j_m <- flexsdm::msdm_posteriori(
                 records = occ_i_filt_part_pa,
                 x = "x",
                 y = "y",
                 pr_ab = "pr_ab",
                 method = "pres",
-                cont_suit = predict_c_con_mean_j,
+                cont_suit = predict_f_con_mean_j,
                 thr = "max_sens_spec",
                 buffer = NULL)
             
-            names(predict_c_con_mean_j_m[[1]]) <- paste0(sp_name, "_mean_con_f_msdm_", j)
-            names(predict_c_con_mean_j_m[[2]]) <- paste0(sp_name, "_mean_con_f_msdm_thr_", j)
+            names(predict_f_con_mean_j_m[[1]]) <- paste0(sp_name, "_mean_con_f_msdm_", j)
+            names(predict_f_con_mean_j_m[[2]]) <- paste0(sp_name, "_mean_con_f_msdm_thr_", j)
             
-            terra::writeRaster(predict_c_con_mean_j_m[[1]], paste0(sp_dir, "05_ens_con_f_msdm_", sp_name, "_", j, ".tif"), overwrite = TRUE)
-            terra::writeRaster(predict_c_con_mean_j_m[[2]], paste0(sp_dir, "05_ens_con_f_msdm_thr_", sp_name, "_", j, ".tif"), overwrite = TRUE)
+            terra::writeRaster(predict_f_con_mean_j_m[[1]], paste0(sp_dir, "05_ens_con_f_msdm_", sp_name, "_", j, ".tif"), overwrite = TRUE)
+            terra::writeRaster(predict_f_con_mean_j_m[[2]], paste0(sp_dir, "05_ens_con_f_msdm_thr_", sp_name, "_", j, ".tif"), overwrite = TRUE)
             
         }
         
