@@ -6,13 +6,18 @@
 #' link: https://sjevelazco.github.io/flexsdm/articles/v02_modeling.html
 #' ----
 
+setwd("E:/Manuscritos_em_producao/Manuscrito_Ricardo_Div_Filogenetica/novas_analises_round_2/01_data_small_mammals")
+
 # prepare r -------------------------------------------------------------
 
 # packages
 library(tidyverse)
 library(terra)
+# remotes::install_github("r-tmap/tmap@v4")
+library(tmap) 
+# For Windows and Mac OS operating systems
+# remotes::install_github("sjevelazco/flexsdm")
 library(flexsdm)
-library(tmap) # remotes::install_github("r-tmap/tmap@v4")
 
 # import data -------------------------------------------------------------
 
@@ -29,6 +34,7 @@ occ <- readr::read_csv("01_data/01_occurrences/02_clean/00_occ_cleaned.csv") %>%
     dplyr::ungroup() %>% 
     dplyr::filter(n >= 10)
 occ
+write.csv(occ, "occ_n_by_species.csv")
 
 tm_shape(terra::vect(occ, geom = c("x", "y"), crs = "EPSG:4326")) +
     tm_dots() +
@@ -60,6 +66,25 @@ tm_shape(var_f[[1]]) +
               col.scale = tm_scale_continuous(values = "Spectral")) +
     tm_shape(af) +
     tm_borders(col = "red")
+
+tm_shape(var_f[[2]]) +
+    tm_raster(col.legend = tm_legend(, show = FALSE),
+              col.scale = tm_scale_continuous(values = "Spectral")) +
+    tm_shape(af) +
+    tm_borders(col = "red")
+
+tm_shape(var_f[[3]]) +
+    tm_raster(col.legend = tm_legend(, show = FALSE),
+              col.scale = tm_scale_continuous(values = "Spectral")) +
+    tm_shape(af) +
+    tm_borders(col = "red")
+
+tm_shape(var_f[[4]]) +
+    tm_raster(col.legend = tm_legend(, show = FALSE),
+              col.scale = tm_scale_continuous(values = "Spectral")) +
+    tm_shape(af) +
+    tm_borders(col = "red")
+names(var_f)
 
 # sdm ---------------------------------------------------------------------
 
